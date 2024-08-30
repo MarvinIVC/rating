@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Rating</title>
+    <style>
+        .rating {
+            display: flex;
+            direction: row-reverse;
+            font-size: 2em;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            cursor: pointer;
+            color: gray;
+        }
+        .rating label:before {
+            content: "★";
+        }
+        .rating input:checked ~ label {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="rating">
+        <input type="radio" name="rating" id="star5" value="5"><label for="star5" title="5 stars"></label>
+        <input type="radio" name="rating" id="star4" value="4"><label for="star4" title="4 stars"></label>
+        <input type="radio" name="rating" id="star3" value="3"><label for="star3" title="3 stars"></label>
+        <input type="radio" name="rating" id="star2" value="2"><label for="star2" title="2 stars"></label>
+        <input type="radio" name="rating" id="star1" value="1"><label for="star1" title="1 star"></label>
+    </div>
+    <script>
+        document.querySelectorAll('.rating input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const rating = e.target.value;
+                fetch('save_rating.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `rating=${rating}`
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Rating saved successfully');
+                    } else {
+                        console.error('Error saving rating');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
